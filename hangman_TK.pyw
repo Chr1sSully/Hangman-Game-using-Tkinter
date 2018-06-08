@@ -55,6 +55,9 @@ class MyGui:
     def __init__(self, master):
         self.master = master
         master.title = 'Hangman'
+        self.secret_word = ''
+        self.guessed_letters = []
+        self.wrong_guesses = []
 
         # Setup widgets
         self.labelText = tk.StringVar()

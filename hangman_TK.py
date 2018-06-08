@@ -140,7 +140,7 @@ def take_guess():
 # Tkinter window setup
 labelText = tk.StringVar()
 labelText.set("Welcome to Hangman!")
-labelDir = tk.Label(window, textvariable=labelText)
+labelDir = ttk.Label(window, textvariable=labelText)
 labelDir.pack()
 
 t1 = tk.Text(window, height=10, width=40, font="Helvetica 18 bold")
@@ -160,18 +160,18 @@ b_start.pack()
 
 labelText = tk.StringVar()
 labelText.set("Word to guess")
-labelDir = tk.Label(window, textvariable=labelText)
+labelDir = ttk.Label(window, textvariable=labelText)
 labelDir.pack()
 
-word_to_guess = tk.Entry(window, font="Helvetica 44 bold", justify='center')
+word_to_guess = ttk.Entry(window, font="Helvetica 44 bold", justify='center')
 word_to_guess.pack()
 
 labelText = tk.StringVar()
 labelText.set("Enter 1 letter below to guess")
-labelDir = tk.Label(window, textvariable=labelText)
+labelDir = ttk.Label(window, textvariable=labelText)
 labelDir.pack()
 
-letter_guess = tk.Entry(window, font="Helvetica 44 bold", justify='center', width=2)
+letter_guess = ttk.Entry(window, font="Helvetica 44 bold", justify='center', width=2)
 letter_guess.pack()
 letter_guess.focus()
 
@@ -180,9 +180,9 @@ b_take_guess.pack()
 
 labelText = tk.StringVar()
 labelText.set("Your previous guesses")
-labelDir = tk.Label(window, textvariable=labelText)
+labelDir = ttk.Label(window, textvariable=labelText)
 labelDir.pack()
-prev_guesses = tk.Entry(window, font="Helvetica 24 bold", justify='center')
+prev_guesses = ttk.Entry(window, font="Helvetica 24 bold", justify='center')
 prev_guesses.pack()
 
 window.bind('<Return>', on_return_key)

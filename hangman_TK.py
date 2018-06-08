@@ -2,9 +2,6 @@ import random
 import tkinter as tk
 from tkinter import ttk
 
-secret_word = ""
-guessed_letters = []
-wrong_guesses = []
 
 HANGMAN_PICS = ['''
  +---+
@@ -52,6 +49,13 @@ HANGMAN_PICS = ['''
 /|\  |
 / \  |
     ===''']
+
+
+secret_word = ""
+guessed_letters = []
+wrong_guesses = []
+
+
 # Initialise window
 window = tk.Tk()
 window.title("Hangman")
@@ -94,14 +98,7 @@ def update_display():
     except:
         t1.delete('1.0', tk.END)
         t1.insert('1.0', "\n\nYou lost the game... :(\n", "center")
-        t1.insert('1.0', "The word was " + secret_word, "center")
-
-
-def update_guessed():
-    pass
-    # prev_guesses.delete(0, tk.END)
-    # for letter in guessed_letters:
-    #     prev_guesses.insert(tk.END, letter + ' ')
+        t1.insert('1.0', "The word was... \n\n" + secret_word, "center")
 
 
 def update_guess():
@@ -116,7 +113,7 @@ def update_guess():
     if word_to_guess.get().replace(' ', '') == secret_word:
         t1.delete('1.0', tk.END)
         t1.insert(tk.END, "\n\nYou WON the game... :)\n", "center")
-        t1.insert(tk.END, "The word was " + secret_word, "center")
+        t1.insert(tk.END, "The word was... \n\n" + secret_word, "center")
     # update previous guessed letters
     prev_guesses.delete(0, tk.END)
     for letter in guessed_letters:
@@ -125,7 +122,8 @@ def update_guess():
 
 def take_guess():
     the_guess = letter_guess.get()
-    if the_guess in guessed_letters or len(the_guess) != 1:
+    if the_guess in guessed_letters or len(the_guess) != 1 or secret_word == '':
+        letter_guess.delete(0, tk.END)
         return None
     if the_guess in secret_word:
         guessed_letters.append(the_guess)
@@ -135,22 +133,27 @@ def take_guess():
 
     letter_guess.delete(0, tk.END)
     update_display()
-    update_guessed()
     update_guess()
 
 
 
 # Tkinter window setup
 labelText = tk.StringVar()
-labelText.set("---The Board---")
+labelText.set("Welcome to Hangman!")
 labelDir = tk.Label(window, textvariable=labelText)
 labelDir.pack()
 
-t1 = tk.Text(window, height=10, width=40)
+t1 = tk.Text(window, height=10, width=40, font="Helvetica 18 bold")
 t1.tag_configure("center", justify='center')
 t1.tag_add("center", 1.0, "end")
 t1.pack()
-t1.insert('1.0', '** Welcome to Hangman! **\n' + HANGMAN_PICS[-1], "center")
+msg = '''\nWelcome to Hangman
+Press Esc or press 
+start game to begin
+Once the game begins
+Enter your letters below 
+'''
+t1.insert('1.0', msg, "center")
 
 b_start = ttk.Button(window, text="Start Game", command=start_game)
 b_start.pack()
@@ -185,5 +188,5 @@ prev_guesses.pack()
 window.bind('<Return>', on_return_key)
 window.bind('<Escape>', on_escape_key)
 
-window.after(10, start_game)
+# window.after(3000, start_game)
 window.mainloop()

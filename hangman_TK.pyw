@@ -116,12 +116,12 @@ def update_guess():
         t1.insert(tk.END, "The word was... \n\n" + secret_word, "center")
     # update previous guessed letters
     prev_guesses.delete(0, tk.END)
-    for letter in guessed_letters:
+    for letter in wrong_guesses:
         prev_guesses.insert(tk.END, letter + ' ')
 
 
 def take_guess():
-    the_guess = letter_guess.get()
+    the_guess = letter_guess.get().lower()
     if the_guess in guessed_letters or len(the_guess) != 1 or secret_word == '':
         letter_guess.delete(0, tk.END)
         return None

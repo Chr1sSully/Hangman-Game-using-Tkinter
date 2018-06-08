@@ -51,26 +51,12 @@ HANGMAN_PICS = ['''
     ===''']
 
 
-# Initialise window
-# window = tk.Tk()
-# window.title("Hangman")
-
-
-# Key bindings for keyboard
-def on_return_key(event):
-    take_guess()
-
-
-# Tkinter window setup
 class MyGui:
     def __init__(self, master):
         self.master = master
         master.title = 'Hangman'
 
-        self.secret_word = ""
-        self.guessed_letters = []
-        self.wrong_guesses = []
-
+        # Setup widgets
         self.labelText = tk.StringVar()
         self.labelText.set("Welcome to Hangman!")
         self.labelDir = ttk.Label(master, textvariable=self.labelText)
@@ -133,9 +119,6 @@ class MyGui:
 
     def start_game(self):
         self.secret_word = self.get_word()
-        # print(secret_word)
-        # print(guessed_letters)
-        # print(wrong_guesses)
         self.guessed_letters = []
         self.wrong_guesses = []
         self.update_display()

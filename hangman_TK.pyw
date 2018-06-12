@@ -1,7 +1,9 @@
 import random
 import tkinter as tk
 from tkinter import ttk
-
+'''
+Simple hangman game using tkinter, requires .txt file with word list in same directory
+'''
 
 HANGMAN_PICS = ['''
  +---+
@@ -58,6 +60,7 @@ class MyGui:
         self.secret_word = ''
         self.guessed_letters = []
         self.wrong_guesses = []
+        self.running = False
 
         # Setup widgets
         self.labelText = tk.StringVar()
@@ -121,6 +124,7 @@ class MyGui:
         self.start_game()
 
     def start_game(self):
+        self.running = True
         self.secret_word = self.get_word()
         self.guessed_letters = []
         self.wrong_guesses = []
@@ -134,41 +138,50 @@ class MyGui:
             self.main_text.insert('1.0', HANGMAN_PICS[len(self.wrong_guesses)], "center")
         except:
             self.main_text.delete('1.0', tk.END)
-            self.main_text.insert('1.0', "\n\nYou lost the game... :(\n", "center")
-            self.main_text.insert('1.0', "The word was... \n\n" + self.secret_word, "center")
+            self.main_text.insert(tk.END, "\n\nYou lost the game... :(\n", "center")
+            self.main_text.insert(tk.END, "The word was... \n\n" + self.secret_word + "\n\n", "center")
+            self.main_text.insert(tk.END, "Press Esc or click below to play again", "center")
+
+            self.running = False
 
     def update_guess(self):
         # Update word to guess
-        self.word_to_guess.delete(0, tk.END)
-        for letter in self.secret_word:
-            if letter not in self.guessed_letters:
-                self.word_to_guess.insert('end', '_' + ' ')
-            else:
-                self.word_to_guess.insert('end', letter + ' ')
+        if self.running:
+            self.word_to_guess.delete(0, tk.END)
+            for letter in self.secret_word:
+                if letter not in self.guessed_letters:
+                    self.word_to_guess.insert('end', '_' + ' ')
+                else:
+                    self.word_to_guess.insert('end', letter + ' ')
 
-        if self.word_to_guess.get().replace(' ', '') == self.secret_word:
-            self.main_text.delete('1.0', tk.END)
-            self.main_text.insert(tk.END, "\n\nYou WON the game... :)\n", "center")
-            self.main_text.insert(tk.END, "The word was... \n\n" + self.secret_word, "center")
-        # update previous guessed letters
-        self.prev_guesses.delete(0, tk.END)
-        for letter in self.wrong_guesses:
-            self.prev_guesses.insert(tk.END, letter + ' ')
+            if self.word_to_guess.get().replace(' ', '') == self.secret_word:
+                self.main_text.delete('1.0', tk.END)
+                self.main_text.insert(tk.END, "\n\nYou WON the game... :)\n", "center")
+                self.main_text.insert(tk.END, "The word was... \n\n" + self.secret_word + "\n\n", "center")
+                self.main_text.insert(tk.END, "Press Esc or click below to play again", "center")
+                self.running = False
+            # update previous guessed letters
+            self.prev_guesses.delete(0, tk.END)
+            for letter in self.wrong_guesses:
+                self.prev_guesses.insert(tk.END, letter + ' ')
 
     def take_guess(self):
-        the_guess = self.letter_guess.get().lower()
-        if the_guess in self.guessed_letters or len(the_guess) != 1 or self.secret_word == '':
-            self.letter_guess.delete(0, tk.END)
-            return None
-        if the_guess in self.secret_word:
-            self.guessed_letters.append(the_guess)
-        else:
-            self.guessed_letters.append(the_guess)
-            self.wrong_guesses.append(the_guess)
+        if self.running:
+            the_guess = self.letter_guess.get().lower()
+            if the_guess in self.guessed_letters or len(the_guess) != 1 or self.secret_word == '' or not the_guess.isalpha():
+                self.letter_guess.delete(0, tk.END)
+                return None
+            if the_guess in self.secret_word:
+                self.guessed_letters.append(the_guess)
+            else:
+                self.guessed_letters.append(the_guess)
+                self.wrong_guesses.append(the_guess)
 
-        self.letter_guess.delete(0, tk.END)
-        self.update_display()
-        self.update_guess()
+            self.letter_guess.delete(0, tk.END)
+            self.update_display()
+            self.update_guess()
+        else:
+            self.letter_guess.delete(0, tk.END)
 
 
 root = tk.Tk()
@@ -178,4 +191,5 @@ root.bind('<Return>', my_gui.on_return_key)
 root.bind('<Escape>', my_gui.on_escape_key)
 
 # window.after(3000, start_gamemy_gui.)
+
 root.mainloop()

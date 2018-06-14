@@ -11,7 +11,6 @@ Simple hangman game using Tkinter, requires .txt file with word list in same dir
 class MyGui:
     def __init__(self, master):
         self.master = master
-        self.master.title = 'Hangman'
         self.secret_word = ''
         self.running = False
         self.start_msg = '''\n
@@ -32,9 +31,9 @@ class MyGui:
     def make_widgets(self):
         ''' Setup all the widgets '''
         # Top label
-        self.labelText = tk.StringVar()
-        self.labelText.set('Welcome to Hangman!')
-        self.labelDir = tk.Label(self.master, textvariable=self.labelText)
+        self.headerText = tk.StringVar()
+        self.headerText.set('Welcome to Hangman!')
+        self.labelDir = tk.Label(self.master, textvariable=self.headerText)
         self.labelDir.pack()
         # Top text box
         self.main_text = tk.Text(self.master, height=10, width=40, font='Helvetica 18 bold')
